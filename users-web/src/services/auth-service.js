@@ -1,9 +1,4 @@
-import axios from 'axios';
-
-const http = axios.create({
-  baseURL: 'http://localhost:3001',
-  withCredentials: true
-});
+import http from './base-http-service';
 
 const authenticate = (user) => http.post('/authenticate', user)
   .then(response => response.data);

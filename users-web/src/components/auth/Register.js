@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import authService from '../../services/AuthService'
+import authService from '../../services/auth-service'
 
 // eslint-disable-next-line no-useless-escape
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
