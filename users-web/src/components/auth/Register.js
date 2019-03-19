@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import authService from '../../services/AuthService'
 
 // eslint-disable-next-line no-useless-escape
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const validations = {
+  name: (value) => {
+    let message;
+    if (!value) {
+      message = 'Name is required';
+    }
+    return message;
+  },
   email: (value) => {
     let message;
     if (!value) {
@@ -24,18 +31,20 @@ const validations = {
   }
 }
 
-class Login extends Component {
+export default class Register extends Component {
   state = {
     user: {
+      name: '',
       email: '',
-      password: ''
+      password: '',
     },
     errors: {
+      name: validations.name(),
       email: validations.email(),
       password: validations.password(),
     },
     touch: {},
-    isAuthenticated: false
+    isRegistered: false
   }
 
   handleChange = (event) => {
@@ -65,19 +74,19 @@ class Login extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.isValid()) {
-      authService.authenticate(this.state.user)
+      authService.register(this.state.user)
         .then(
-          (user) => this.setState({ isAuthenticated: true }),
+          (user) => this.setState({ isRegistered: true }),
           (error) => {
             const { message, errors } = error.response.data;
             this.setState({
               errors: {
                 ...errors,
-                password: !errors && message
+                email: !errors && message
               },
               touch: {
                 ...errors,
-                password: !errors && message
+                email: !errors && message
               }
             })
           }
@@ -91,15 +100,23 @@ class Login extends Component {
   }
 
   render() {
-    const { isAuthenticated, errors, user, touch } =  this.state;
-    if (isAuthenticated) {
-      return (<Redirect to="/users" />)
+    const { isRegistered, errors, user, touch } = this.state;
+    if (isRegistered) {
+      return (<Redirect to="/login" />)
     }
 
     return (
       <div className="row justify-content-center mt-5">
         <div className="col-xs-12 col-sm-4">
           <form onSubmit={this.handleSubmit}>
+            <div className="input-group mb-2">
+              <div className="input-group-prepend">
+                <div className="input-group-text" style={{ width: '42px' }}><i className="fa fa-user"></i></div>
+              </div>
+              <input type="text" className={`form-control ${touch.name && errors.name && 'is-invalid'}`} name="name" placeholder="Name" onChange={this.handleChange} value={user.name} onBlur={this.handleBlur} />
+              <div className="invalid-feedback">{errors.name}</div>
+            </div>
+
             <div className="input-group mb-2">
               <div className="input-group-prepend">
                 <div className="input-group-text"><i className="fa fa-envelope-o"></i></div>
@@ -117,16 +134,13 @@ class Login extends Component {
             </div>
 
             <div className="from-actions">
-              <button type="submit" className="btn btn-primary btn-block" disabled={!this.isValid()}>Login</button>
+              <button type="submit" className="btn btn-primary btn-block" disabled={!this.isValid()}>Register</button>
             </div>
           </form>
           <hr />
-          <p className="text-center">Don't have an account? <Link to="/register">Sign up</Link></p>
+          <p className="text-center">Already registered? <Link to="/login">Login</Link></p>
         </div>
       </div>
     );
   }
 }
-
-
-export default Login
