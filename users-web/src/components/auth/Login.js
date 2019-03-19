@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import authService from '../../services/auth-service'
+import { withAuthConsumer } from '../../contexts/AuthStore';
 
 // eslint-disable-next-line no-useless-escape
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -67,7 +68,11 @@ class Login extends Component {
     if (this.isValid()) {
       authService.authenticate(this.state.user)
         .then(
-          (user) => this.setState({ isAuthenticated: true }),
+          (user) => {
+            this.setState({ isAuthenticated: true }, () => {
+              this.props.onUserChanged(user)
+            })
+          },
           (error) => {
             const { message, errors } = error.response.data;
             this.setState({
@@ -129,4 +134,4 @@ class Login extends Component {
 }
 
 
-export default Login
+export default withAuthConsumer(Login)

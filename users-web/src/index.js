@@ -8,10 +8,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthStore } from './contexts/AuthStore';
 
 ReactDOM.render(
   <Router>
-    <App />
+    <AuthStore>
+      <App />
+    </AuthStore>
   </Router>,
   document.getElementById('root'));
 
