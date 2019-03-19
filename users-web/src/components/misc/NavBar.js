@@ -24,9 +24,11 @@ class NavBar extends Component {
 
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <NavLink className="nav-link" activeClassName="active" to="/users">Users</NavLink>
-            </li>
+            {isAuthenticated() &&
+              <li className="nav-item">
+                <NavLink className="nav-link" activeClassName="active" to="/users">Users</NavLink>
+              </li>
+            }
           </ul>
           <ul className="navbar-nav my-2 my-lg-0">
             {!isAuthenticated() &&
