@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const constants = require('../constants');
-const admins = process.env.ADMIN_EMAILS.split(',').trim() || ["admin@example.org"];
+const admins = (process.env.ADMIN_EMAILS || "admin@example.org")
+  .split(',')
+  .map(o => o.trim())
+  
 const SALT_WORK_FACTOR = 10;
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const PASSWORD_PATTERN = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;

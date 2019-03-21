@@ -1,9 +1,9 @@
 const createError = require('http-errors');
 const cors = require('cors');
 
-const allowedOrigins = process.env.CORS_ORIGINS.split(',').trim() || [
-  "http://localhost:3000"
-]
+const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000")
+  .split(',')
+  .map(o => o.trim())
 
 module.exports = cors({
   origin: (origin, next) => {
