@@ -1,15 +1,25 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router-dom';
-import { withAuthConsumer } from '../contexts/AuthStore';
+import { AuthContext } from '../contexts/AuthStore';
+import { Redirect, Route } from 'react-router-dom';
+
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
-    <Route {...rest} render={(props) =>
-      rest.isAuthenticated() ?
-        <Component {...props} /> :
-        <Redirect to="/login" />
-    }/>
+    <AuthContext.Consumer>
+      {( { isAuthenticated, user } ) => (
+      <Route {...rest} render={ (props) => {
+        if (isAuthenticated()) {
+          if (!rest.role || rest.role === user.role) {
+            return (<Component {...props} />);
+          } else {
+            return <Redirect to="/forbidden" />; 
+          }
+        }
+        return <Redirect to="/login" />; 
+      }}/>
+      )}
+    </AuthContext.Consumer>
   );
 }
 
-export default withAuthConsumer(PrivateRoute)
+export default PrivateRoute;

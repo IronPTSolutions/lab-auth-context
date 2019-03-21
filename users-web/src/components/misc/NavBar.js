@@ -14,7 +14,7 @@ class NavBar extends Component {
   }
 
   render() {
-    const { user, isAuthenticated } = this.props;
+    const { user, isAuthenticated, isAdmin } = this.props;
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light mt-5" style={{ borderRadius: "5px" }}>
         <Link className="navbar-brand" to="/users">Auth Context Lab</Link>
@@ -25,9 +25,10 @@ class NavBar extends Component {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav mr-auto">
             {isAuthenticated() &&
-              <li className="nav-item">
-                <NavLink className="nav-link" activeClassName="active" to="/users">Users</NavLink>
-              </li>
+              <Fragment>
+                <li className="nav-item"><NavLink className="nav-link" activeClassName="active" to="/users">Users</NavLink></li>
+                {isAdmin() && <li className="nav-item"><NavLink className="nav-link" activeClassName="active" to="/admin">Admin Zone</NavLink></li>}
+              </Fragment>
             }
           </ul>
           <ul className="navbar-nav my-2 my-lg-0">
@@ -39,8 +40,8 @@ class NavBar extends Component {
             }
             {isAuthenticated() &&
               <Fragment>
-                <li className="nav-item"><a className="nav-link" href="#">{user.email}</a></li>
-                <li className="nav-item"><button className="btn-link nav-link" onClick={this.handleLogout}>Logout</button></li>
+                <li className="nav-item"><button className="btn btn-link nav-link">{user.email}</button></li>
+                <li className="nav-item"><button className="btn btn-link nav-link" onClick={this.handleLogout}>Logout</button></li>
               </Fragment>
             }
           </ul>

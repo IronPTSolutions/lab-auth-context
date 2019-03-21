@@ -5,6 +5,8 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import UserList from './components/users/UserList';
 import PrivateRoute from './guards/PrivateRoute';
+import AdminMessage from './components/misc/AdminMessage';
+import { Forbidden, NotFound } from './components/errors/Error';
 
 class App extends Component {
   render() {
@@ -17,7 +19,10 @@ class App extends Component {
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <PrivateRoute exact path="/users" component={UserList} />
-              <Redirect to="/users"/>
+              <PrivateRoute exact path="/admin" role={"admin"} component={AdminMessage} />
+              <Route exact path="/forbidden" component={Forbidden}/>
+              <Route exact path="/not-found" component={NotFound}/>
+              <Redirect to="/not-found"/>
             </Switch>
           </div>
         </div>

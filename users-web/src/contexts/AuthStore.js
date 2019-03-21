@@ -12,8 +12,11 @@ class AuthStore extends Component {
 
   handleUserChange = (user) => {
     this.setState({ user: user });
-    if (user && user.email) localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-    else localStorage.removeItem(CURRENT_USER_KEY);
+    if (user && user.email) {
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(CURRENT_USER_KEY)
+    }
   }
 
   isAuthenticated = () => this.state.user && this.state.user.email;
