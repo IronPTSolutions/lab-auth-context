@@ -5,7 +5,6 @@ class UserItem extends Component {
 
   handleDelete = (id) => {
     usersService.deleteUser(id)
-      .then(() => this.props.onClickDelete(id))
   }
 
   render() {

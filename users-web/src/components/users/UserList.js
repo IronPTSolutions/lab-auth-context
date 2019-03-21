@@ -7,21 +7,26 @@ class UserList extends Component {
   state = {
     users: []
   }
+  usersSubscription = undefined
 
   componentDidMount() {
     usersService.list()
       .then(users => this.setState({ users: users }))
+    
+      this.usersSubscription = usersService.onUsersChange().subscribe(
+      users => this.setState({ users: users })
+    );
   }
 
-  handleDeleteUser = (id) => {
-    this.setState({ users: this.state.users.filter(user => user.id !== id) })
+  componentWillUnmount() {
+    this.usersSubscription.unsubscribe();
   }
 
   render() {
     const { isAdmin } = this.props;
     const users = this.state
       .users
-      .map(user => (<UserItem key={user.id} {...user} adminOptions={isAdmin()} onClickDelete={this.handleDeleteUser}/>));
+      .map(user => (<UserItem key={user.id} {...user} adminOptions={isAdmin()} />));
 
     return (
       <div className="row">

@@ -8,7 +8,6 @@ class NavBar extends Component {
   handleLogout = () => {
     authService.logout()
       .then(() => {
-        this.props.onUserChanged({})
         this.props.history.push('/login')
       })
   }
